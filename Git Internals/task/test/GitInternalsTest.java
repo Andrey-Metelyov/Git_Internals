@@ -25,7 +25,13 @@ public class GitInternalsTest extends StageTest<List<String>> {
                         .setAttach(Arrays.asList(
                                 "Enter .git directory location:",
                                 "Enter git object hash:",
-                                "type:commit length:216")),
+                                "*COMMIT*",
+                                "tree: 79401ddb0e2c0fe0472c813754dd4a8873b66a84",
+                                "parents: 12a4717e84b5e414f93cc91ca50a6d5a6c3563a0",
+                                "author: Smith mr.smith@matrix original timestamp: 2020-03-29 17:18:20 +03:00",
+                                "committer: Cypher cypher@matrix commit timestamp: 2020-03-29 17:25:52 +03:00",
+                                "commit message:",
+                                "get docs from feature1")),
                 new TestCase<List<String>>()
                         .setInput(
                                 "test\n" +
@@ -33,7 +39,12 @@ public class GitInternalsTest extends StageTest<List<String>> {
                         .setAttach(Arrays.asList(
                                 "Enter .git directory location:",
                                 "Enter git object hash:",
-                                "type:blob length:85")),
+                                "*BLOB*",
+                                "fun main() {",
+                                "    while(true) {",
+                                "        println(\"Hello Hyperskill student!\")",
+                                "    }",
+                                "} ")),
                 new TestCase<List<String>>()
                         .setInput(
                                 "test\n" +
@@ -41,31 +52,26 @@ public class GitInternalsTest extends StageTest<List<String>> {
                         .setAttach(Arrays.asList(
                                 "Enter .git directory location:",
                                 "Enter git object hash:",
-                                "type:blob length:14")),
+                                "*BLOB*",
+                                "Hello world! ")),
                 new TestCase<List<String>>()
                         .setInput(
                                 "test\n" +
-                                "a7b882bbf2db5d90287e9affc7e6f3b3c740b327\n")
+                                "39a0337532d7720acc90497043e2ade92c386939\n")
                         .setAttach(Arrays.asList(
                                 "Enter .git directory location:",
                                 "Enter git object hash:",
-                                "type:tree length:35")),
-                new TestCase<List<String>>()
-                        .setInput(
-                                "test\n" +
-                                "fb043556c251cb450a0d55e4ceb1ff35e12029c3\n")
-                        .setAttach(Arrays.asList(
-                                "Enter .git directory location:",
-                                "Enter git object hash:",
-                                "type:tree length:73")),
-                new TestCase<List<String>>()
-                        .setInput(
-                                "test\n" +
-                                "ad3a818dc87b9940935b24a5aa93fac00f086bf9\n")
-                        .setAttach(Arrays.asList(
-                                "Enter .git directory location:",
-                                "Enter git object hash:",
-                                "type:tree length:35"))
+                                "*COMMIT*",
+                                "tree: 998b5fa98f0fae83e6cb24a8815b8923aead7ee0",
+                                "parents: 6d537a47eddc11f866bcc2013703bf31bfcf9ed8",
+                                "author: Neo neo@matrix original timestamp: 2020-04-04 09:59:23 +03:00",
+                                "committer: Neo neo@matrix commit timestamp: 2020-04-04 09:59:23 +03:00",
+                                "commit message:",
+                                "this commit message will have multiple lines",
+                                "we need multiple lines commit message for test purposes",
+                                "3",
+                                "4",
+                                "5"))
         );
     }
 
