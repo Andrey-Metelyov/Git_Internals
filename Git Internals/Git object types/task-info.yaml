@@ -106,14 +106,6 @@ files:
         }
     }
   learner_created: false
-- name: test/objects/0e/ee6a98471a350b2c2316313114185ecaf82f0e
-  visible: false
-  text: eAFdjk1qAzEMRrv2KbQvFMmW/yCEQo7QE2hkTScLd4LjQHP7pqGrrt63ebxP997PEzyllznMIFdGam1B84qrIWevhUKO3BpLKTksKUlhd5FhXxPIC2fKVniJxsRrDaqVVCJKalGShpiCoJPb3PYBH4/aBoc+3q6/673LHOfvI1AskStFRHjFgOj0eWzagNP9sj1w0Cf/GzX6P8N92oS26xXWsXdYTeZtGLkfjEVDfg==
-  learner_created: false
-- name: test/objects/49/0f96725348e92770d3c6bab9ec532564b7ebe0
-  visible: false
-  text: eAFLyslPUrAwZUgrzVPITczM09BUqOZSAILyjMycVI2SotJUmAhItKAoM68kJ09DySM1JydfwaOyILWoODszJ0ehuKQ0JTWvRFFJE6y9lqtWgQsADocbVw==
-  learner_created: false
 - name: test/objects/61/8383db6d7ee3bd2e97b871205f113b6a3ba854
   visible: false
   text: eAFLyslPUjA0YfBIzcnJVyjPL8pJUVTgAgBQEgas
@@ -122,14 +114,25 @@ files:
   visible: false
   text: eAErKUpNVTA2ZTA0MDAzMVHITczM08suYVijbvhOxXqjoOxNS7HdRtPe1dcpvwcAHYQPEg==
   learner_created: false
+- name: test/objects/0e/ee6a98471a350b2c2316313114185ecaf82f0e
+  visible: false
+  text: eAFdjk1qAzEMRrv2KbQvFMmW/yCEQo7QE2hkTScLd4LjQHP7pqGrrt63ebxP997PEzyllznMIFdGam1B84qrIWevhUKO3BpLKTksKUlhd5FhXxPIC2fKVniJxsRrDaqVVCJKalGShpiCoJPb3PYBH4/aBoc+3q6/673LHOfvI1AskStFRHjFgOj0eWzagNP9sj1w0Cf/GzX6P8N92oS26xXWsXdYTeZtGLkfjEVDfg==
+  learner_created: false
 - name: test/objects/ad/3a818dc87b9940935b24a5aa93fac00f086bf9
   visible: false
   text: eAErKUpNVTA2ZTA0MDAzMVHITczM08suYTh0o+NNPdt26bgThdosKRdPVXHN/wMANu0Qgw==
+  learner_created: false
+- name: test/objects/49/0f96725348e92770d3c6bab9ec532564b7ebe0
+  visible: false
+  text: eAFLyslPUrAwZUgrzVPITczM09BUqOZSAILyjMycVI2SotJUmAhItKAoM68kJ09DySM1JydfwaOyILWoODszJ0ehuKQ0JTWvRFFJE6y9lqtWgQsADocbVw==
   learner_created: false
 - name: test/objects/fb/043556c251cb450a0d55e4ceb1ff35e12029c3
   visible: false
   text: eAErKUpNVTA3ZjA0MDAzMVHITczM08suYdBWOxjDYh47QcG8+bePlut/lq2Fy6BKilITU3JT9UoqShi8uvZVJ/benxO6dt/iyHOd4qWVXokANVAdtQ==
   learner_created: false
 feedback_link: https://hyperskill.org/projects/110/stages/596/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Mon, 09 Aug 2021 05:29:29 UTC
 record: -1
