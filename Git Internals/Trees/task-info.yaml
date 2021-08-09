@@ -260,9 +260,12 @@ files:
   visible: false
   text: eAErKUpNVTA0NGQwNDAwMzFRyE3MzNPLLmHQVjsYw2IeO0HBvPm3j5brf5athcugSopSE1NyU/VKKkoYvpVsvbzk2LmvjdF+Re/1Fu5+kl2RbWIABArF+bmpumn5OSmpRQwlkj0tc3efDbyQcHRS8JLSurc79woBACxgMHU=
   learner_created: false
+- name: test/objects/39/a0337532d7720acc90497043e2ade92c386939
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/110/stages/598/implement#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Mon, 09 Aug 2021 08:09:42 UTC
-record: -1
+record: 4

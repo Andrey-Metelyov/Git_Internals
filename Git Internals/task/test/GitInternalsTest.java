@@ -21,9 +21,11 @@ public class GitInternalsTest extends StageTest<List<String>> {
                 new TestCase<List<String>>()
                         .setInput(
                                 "test\n" +
+                                "cat-file\n" +
                                 "0eee6a98471a350b2c2316313114185ecaf82f0e\n")
                         .setAttach(Arrays.asList(
                                 "Enter .git directory location:",
+                                "Enter command:",
                                 "Enter git object hash:",
                                 "*COMMIT*",
                                 "tree: 79401ddb0e2c0fe0472c813754dd4a8873b66a84",
@@ -35,9 +37,11 @@ public class GitInternalsTest extends StageTest<List<String>> {
                 new TestCase<List<String>>()
                         .setInput(
                                 "test\n" +
+                                "cat-file\n" +
                                 "490f96725348e92770d3c6bab9ec532564b7ebe0\n")
                         .setAttach(Arrays.asList(
                                 "Enter .git directory location:",
+                                "Enter command:",
                                 "Enter git object hash:",
                                 "*BLOB*",
                                 "fun main() {",
@@ -48,9 +52,11 @@ public class GitInternalsTest extends StageTest<List<String>> {
                 new TestCase<List<String>>()
                         .setInput(
                                 "test\n" +
+                                "cat-file\n" +
                                 "fb043556c251cb450a0d55e4ceb1ff35e12029c3\n")
                         .setAttach(Arrays.asList(
                                 "Enter .git directory location:",
+                                "Enter command:",
                                 "Enter git object hash:",
                                 "*TREE*",
                                 "100644 2b26c15c4375d90203783fb4c2a45ff4b571a6 main.kt",
@@ -58,32 +64,13 @@ public class GitInternalsTest extends StageTest<List<String>> {
                 new TestCase<List<String>>()
                         .setInput(
                                 "test\n" +
-                                "ad3a818dc87b9940935b24a5aa93fac00f086bf9\n")
+                                "list-branches\n")
                         .setAttach(Arrays.asList(
                                 "Enter .git directory location:",
-                                "Enter git object hash:",
-                                "*TREE*",
-                                "100644 c2d888ec7f6b71b5ec8712b464d1ca7aa9ffc main.kt")),
-                new TestCase<List<String>>()
-                        .setInput(
-                                "test\n" +
-                                "109e8050b41bd10b81be0a51a5e67327f5609551\n")
-                        .setAttach(Arrays.asList(
-                                "Enter .git directory location:",
-                                "Enter git object hash:",
-                                "*TREE*",
-                                "100644 2b26c15c4375d90203783fb4c2a45ff4b571a6 main.kt",
-                                "100644 f674b5d3a4c6cef5815b4e72ef2ea1bbe46b786b readme.txt",
-                                "40000 74198c849dbbcd51d060c59253a4757eedb9bd12 some-folder")),
-                new TestCase<List<String>>()
-                        .setInput(
-                                "test\n" +
-                                "74198c849dbbcd51d060c59253a4757eedb9bd12\n")
-                        .setAttach(Arrays.asList(
-                                "Enter .git directory location:",
-                                "Enter git object hash:",
-                                "*TREE*",
-                                "100644 83cc1999347924da28890838ad5e698da854a3 qq.txt"))
+                                "Enter command:",
+                                "  feature1",
+                                "  feature2",
+                                "* master"))
         );
     }
 
