@@ -12,15 +12,27 @@ fun main() {
     println("Enter .git directory location:")
     val gitDir = readLine()!!
     println("Enter command:")
-    val command = readLine()!!
-    when (command) {
-        "list-branches" -> listBranches(gitDir)
+    when (readLine()!!) {
+        "list-branches" -> showGitBranches(gitDir)
         "cat-file" -> showGitFile(gitDir)
+        "log" -> showGitLog(gitDir)
         else -> println("Unknown command")
     }
 }
 
-fun listBranches(gitDir: String) {
+fun showGitLog(gitDir: String) {
+    println("Enter branch name:")
+    val branchName = readLine()!!
+    val headsDir = Path.of(gitDir, "refs", "heads")
+    val branchFile = File(headsDir.toFile(), branchName)
+    val commit = branchFile.readLines()[0]
+    System.err.println("branchName: $branchName, branchFile: $branchFile, commit: $commit")
+    println("Commit:")
+    println(commit)
+    printFile(gitDir, commit)
+}
+
+fun showGitBranches(gitDir: String) {
     val (_, currentHeadFileName) = File(gitDir, "HEAD").readLines()[0].split(": ")
     val currentHead = File(gitDir, currentHeadFileName)
     System.err.println("currentHead = '$currentHeadFileName', file: $currentHead")
@@ -32,6 +44,10 @@ fun listBranches(gitDir: String) {
 private fun showGitFile(gitDir: String) {
     println("Enter git object hash:")
     val hash = readLine()!!
+    printFile(gitDir, hash)
+}
+
+private fun printFile(gitDir: String, hash: String) {
     val path = Path.of(gitDir, "objects", hash.substring(0, 2), hash.substring(2))
     val inflater = Inflater()
     val outputStream = ByteArrayOutputStream()
@@ -43,8 +59,8 @@ private fun showGitFile(gitDir: String) {
         val count = inflater.inflate(buffer)
         outputStream.write(buffer, 0, count)
     }
-
     outputStream.close()
+
     val bytes = outputStream.toByteArray()
     val zeroByteIndex = bytes.indexOf(0)
     System.err.println("zeroByteIndex=$zeroByteIndex")
@@ -55,7 +71,11 @@ private fun showGitFile(gitDir: String) {
     val (type, size) = headerString.split(" ")
     System.err.println("type:$type length:$size")
     when (type) {
-        "commit" -> printCommitInfo(content)
+        "commit" -> {
+            printCommitInfo(content)
+            val commit = GitCommit.parse(content.toByteArray())
+            System.err.println(commit)
+        }
         "blob" -> printBlobInfo(content)
         "tree" -> printTree(content)
     }
@@ -72,7 +92,7 @@ fun printTree(content: List<Byte>) {
             .split(" ")
         lastIndex += zeroByteIndex + 1
         val hashBytes = content.slice(lastIndex until lastIndex + 20)
-        System.err.println("hashBytes = ${hashBytes}")
+        System.err.println("hashBytes = $hashBytes")
         System.err.println("hashBytes = ${hashBytes.map { byte -> "%x".format(byte) }}")
         val hash = hashBytes.joinToString("") { byte -> "%x".format(byte) }
         System.err.println("hash.length = ${hash.length}")
