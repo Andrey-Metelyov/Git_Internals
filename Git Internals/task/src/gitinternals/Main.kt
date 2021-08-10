@@ -1,6 +1,7 @@
 package gitinternals
 
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.nio.file.Path
 import java.time.Instant
 import java.time.ZoneId
@@ -8,9 +9,27 @@ import java.time.format.DateTimeFormatter
 import java.util.zip.Inflater
 
 fun main() {
-    // write your code here
     println("Enter .git directory location:")
     val gitDir = readLine()!!
+    println("Enter command:")
+    val command = readLine()!!
+    when (command) {
+        "list-branches" -> listBranches(gitDir)
+        "cat-file" -> showGitFile(gitDir)
+        else -> println("Unknown command")
+    }
+}
+
+fun listBranches(gitDir: String) {
+    val (_, currentHeadFileName) = File(gitDir, "HEAD").readLines()[0].split(": ")
+    val currentHead = File(gitDir, currentHeadFileName)
+    System.err.println("currentHead = '$currentHeadFileName', file: $currentHead")
+    val headsDir = Path.of(gitDir, "refs", "heads")
+    val branches = headsDir.toFile().listFiles()
+    branches.sorted().forEach { println(if (it == currentHead) "* " + it.name else "  " + it.name) }
+}
+
+private fun showGitFile(gitDir: String) {
     println("Enter git object hash:")
     val hash = readLine()!!
     val path = Path.of(gitDir, "objects", hash.substring(0, 2), hash.substring(2))
@@ -32,7 +51,6 @@ fun main() {
     val header = bytes.slice(0 until zeroByteIndex).map { it.toInt().toChar() }
     val content = bytes.slice(zeroByteIndex + 1..bytes.lastIndex)
     val headerString = header.joinToString("")
-//    val (header, content) = outputStream.toString().split(0.toChar())
     System.err.println(headerString)
     val (type, size) = headerString.split(" ")
     System.err.println("type:$type length:$size")
@@ -41,15 +59,9 @@ fun main() {
         "blob" -> printBlobInfo(content)
         "tree" -> printTree(content)
     }
-//    println(content)
-//    println(outputStream.toString().replace(0.toChar(), '\n'))
 }
 
 fun printTree(content: List<Byte>) {
-//  [type][space][size][nullChar]
-//  [firstPermisionNumber][space][firstFileName][nullChar][firstHash]
-//  [secondPermissionNumber][space][secondFileName][nullChar][secondHash]
-//  [thirdPermissionNumber][space][secondFileName][nullChar][secondHash]
     println("*TREE*")
     System.err.println(content.map { it.toInt().toChar() })
     var lastIndex = 0
@@ -58,26 +70,16 @@ fun printTree(content: List<Byte>) {
         System.err.println("zeroByteIndex: $zeroByteIndex")
         val (perm, filename) = content.slice(lastIndex until lastIndex + zeroByteIndex).map { it.toInt().toChar() }.joinToString("")
             .split(" ")
-//    System.err.println("filename: $filename")
         lastIndex += zeroByteIndex + 1
         val hashBytes = content.slice(lastIndex until lastIndex + 20)
-        System.err.println("hashBytes = ${hashBytes.toString()}")
+        System.err.println("hashBytes = ${hashBytes}")
         System.err.println("hashBytes = ${hashBytes.map { byte -> "%x".format(byte) }}")
-        val hash = hashBytes.map { byte -> "%x".format(byte) }.joinToString("")
+        val hash = hashBytes.joinToString("") { byte -> "%x".format(byte) }
         System.err.println("hash.length = ${hash.length}")
         println("$perm $hash $filename")
         lastIndex += 20
         System.err.println("lastIndex: $lastIndex, content.size: ${content.size}")
     }
-//    val line = content.slice(lastIndex until zeroByteIndex).map { it.toInt().toChar() }.joinToString("")
-// Output text at line (3)
-// (100644 2b26c15c04375d90203783fb4c2a45ff04b571a6 main.kt) does not match expected
-// (100644 2b26c15c04375d90203783fb4c2a45ff04b571a6 main.kt)
-// 2b26c15c4375d90203783fb4c2a45ff4b571a6
-// [1, 0, 0, 6, 4, 4,  , m, a, i, n, ., k, t,  ,
-// +, &, ￁, \, , 7, ], ﾐ,  , 7, ﾃ, ￻, L, *, E, ￿, , ﾵ, q, ﾦ,
-// 1, 0, 0, 6, 4, 4,  , r, e, a, d, m, e, ., t, x, t,  ,
-// J, ﾊ, ﾾ, {, a, ﾍ, ￟, ﾜ, U, ﾭ, ﾾ, ﾣ, Y, ￎ, ﾉ, , u, y, J, a]
 }
 
 fun printBlobInfo(content: List<Byte>) {
@@ -111,7 +113,7 @@ fun printCommitInfo(content: List<Byte>) {
     val timeCommitted = formatterApplied.format(commitApplied)
     System.err.println(timeCreated)
     System.err.println(timeCommitted)
-    println("author: $authorName ${authorEmail.substring(1..authorEmail.lastIndex - 1)} original timestamp: $timeCreated")
-    println("committer: $committerName ${committerEmail.substring(1..committerEmail.lastIndex - 1)} commit timestamp: $timeCommitted")
+    println("author: $authorName ${authorEmail.substring(1 until authorEmail.lastIndex)} original timestamp: $timeCreated")
+    println("committer: $committerName ${committerEmail.substring(1 until committerEmail.lastIndex)} commit timestamp: $timeCommitted")
     println("commit message:$commitMessage")
 }
