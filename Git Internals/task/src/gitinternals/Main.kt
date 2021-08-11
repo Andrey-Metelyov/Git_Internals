@@ -25,12 +25,26 @@ fun showGitLog(gitDir: String) {
     val branchName = readLine()!!
     val headsDir = Path.of(gitDir, "refs", "heads")
     val branchFile = File(headsDir.toFile(), branchName)
-    val commit = branchFile.readLines()[0]
-    System.err.println("branchName: $branchName, branchFile: $branchFile, commit: $commit")
-    println("Commit:")
-    println(commit)
-    printFile(gitDir, commit)
+    var commit = branchFile.readLines()[0]
+    while (commit.isNotEmpty()) {
+        System.err.println("branchName: $branchName, branchFile: $branchFile, commit: $commit")
+        val gitCommit = GitCommit.parseFile(gitDir, commit)
+        System.err.println(gitCommit)
+        println(
+            "Commit: $commit\n" +
+                    "${gitCommit.committerName} ${gitCommit.committerEmail} commit timestamp: ${gitCommit.timeCommitted}\n" +
+                    "${gitCommit.commitMessage}\n"
+        )
+        commit = if (gitCommit.parents.isNotEmpty()) gitCommit.parents[0] else ""
+        System.err.println("parent: ${commit}")
+    }
 }
+
+/*
+Output text at line (4) (
+Neo <neo@matrix> commit timestamp: 2020-04-04 11:42:08 +03:00) does not match expected (
+Neo neo@matrix commit timestamp: 2020-04-04 11:42:08 +03:00)
+*/
 
 fun showGitBranches(gitDir: String) {
     val (_, currentHeadFileName) = File(gitDir, "HEAD").readLines()[0].split(": ")
@@ -73,8 +87,8 @@ private fun printFile(gitDir: String, hash: String) {
     when (type) {
         "commit" -> {
             printCommitInfo(content)
-            val commit = GitCommit.parse(content.toByteArray())
-            System.err.println(commit)
+//            val commit = GitCommit.parse(content.toByteArray())
+//            System.err.println(commit)
         }
         "blob" -> printBlobInfo(content)
         "tree" -> printTree(content)

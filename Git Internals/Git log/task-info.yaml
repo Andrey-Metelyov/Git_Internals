@@ -338,39 +338,12 @@ files:
 - name: src/gitinternals/GitCommit.kt
   visible: true
   learner_created: true
-- name: src/gitinternals/GitTools.kt
-  visible: true
-  learner_created: true
 - name: src/gitinternals/GitFile.kt
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/projects/110/stages/600/implement#comment
-status: Failed
+status: Solved
 feedback:
-  message: |-
-    Wrong answer in test #5
-
-    Number of lines in your output (12) does not match expected value(34)
-
-    Please find below the output of your program during this failed test.
-    Note that the &#39;&gt;&#39; character indicates the beginning of the input line.
-
-    ---
-
-    Enter .git directory location:
-    &gt; test
-    Enter command:
-    &gt; log
-    Enter branch name:
-    &gt; master
-    Commit:
-    fd362f3f305819d17b4359444aa83e17e7d6924a
-    *COMMIT*
-    tree: 109e8050b41bd10b81be0a51a5e67327f5609551
-    parents: 39a0337532d7720acc90497043e2ade92c386939
-    author: Neo neo@matrix original timestamp: 2020-04-04 11:42:08 +03:00
-    committer: Neo neo@matrix commit timestamp: 2020-04-04 11:42:08 +03:00
-    commit message:
-    add subfolder
-  time: Tue, 10 Aug 2021 07:14:19 UTC
+  message: Congratulations!
+  time: Wed, 11 Aug 2021 05:39:17 UTC
 record: -1

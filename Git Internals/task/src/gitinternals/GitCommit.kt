@@ -1,13 +1,14 @@
 package gitinternals
 
 import java.io.File
+import java.nio.file.Path
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class GitCommit private constructor(
     val tree: String,
-    val parents: String,
+    val parents: List<String>,
     val authorName: String,
     val authorEmail: String,
     val timeCreated: String,
@@ -17,6 +18,10 @@ class GitCommit private constructor(
     val commitMessage: String
 ) {
     companion object {
+        fun parseFile(gitDir: String, hash: String): GitCommit {
+            val path = Path.of(gitDir, "objects", hash.substring(0, 2), hash.substring(2))
+            return parseFile(path.toFile())
+        }
         fun parseFile(file: File): GitCommit {
             val gitFile = GitFile(file)
             return parse(gitFile.content)
@@ -24,15 +29,25 @@ class GitCommit private constructor(
 
         private fun parse(bytes: ByteArray): GitCommit {
             val lines = bytes.map { it.toInt().toChar() }.joinToString("").split('\n')
-//            println("*COMMIT*")
-//            for (line in lines) {
-//                System.err.println(line)
-//            }
-            val (_, tree) = lines[0].split(" ")
-            val (_, parents) = lines[1].split(" ")
-            val (_, authorName, authorEmail, timeCommitCreated, timezoneCommitCreated) = lines[2].split(" ")
-            val (_, committerName, committerEmail, timeCommitApplied, timezoneCommitApplied) = lines[3].split(" ")
-            val commitMessage = lines.subList(4, lines.lastIndex).joinToString("\n")
+            System.err.println("*COMMIT*")
+            for (line in lines) {
+                System.err.println(line)
+            }
+            var current = 0
+            val (_, tree) = lines[current++].split(" ")
+            val listParents = mutableListOf<String>()
+            do {
+                val (type, str) = lines[current++].split(" ")
+                if (type == "parent") {
+                    listParents.add(str)
+                } else {
+                    current--
+                }
+            } while (type == "parent")
+            val (_, authorName, authorEmail, timeCommitCreated, timezoneCommitCreated) = lines[current++].split(" ")
+            val (_, committerName, committerEmail, timeCommitApplied, timezoneCommitApplied) = lines[current++].split(" ")
+            current++
+            val commitMessage = lines.subList(current++, lines.lastIndex).joinToString("\n")
 
 //            println("tree: $tree")
 //            println("parents: $parents")
@@ -50,15 +65,15 @@ class GitCommit private constructor(
 //            println("author: $authorName ${authorEmail.substring(1 until authorEmail.lastIndex)} original timestamp: $timeCreated")
 //            println("committer: $committerName ${committerEmail.substring(1 until committerEmail.lastIndex)} commit timestamp: $timeCommitted")
 //            println("commit message:$commitMessage")
-            return GitCommit(tree, parents,
-                authorName, authorEmail, timeCreated,
-                committerName, committerEmail, timeCommitted,
+            return GitCommit(tree, listParents,
+                authorName, authorEmail.substring(1 until authorEmail.lastIndex), timeCreated,
+                committerName, committerEmail.substring(1 until committerEmail.lastIndex), timeCommitted,
                 commitMessage
             )
         }
     }
 
     override fun toString(): String {
-        return "GitCommit(tree='$tree', parents='$parents', authorName='$authorName', authorEmail='$authorEmail', timeCreated='$timeCreated', committerName='$committerName', committerEmail='$committerEmail', timeCommitted='$timeCommitted', commitMessage='$commitMessage')"
+        return "GitCommit(tree='$tree',\nparents='$parents',\nauthorName='$authorName', authorEmail='$authorEmail', timeCreated='$timeCreated',\ncommitterName='$committerName', committerEmail='$committerEmail', timeCommitted='$timeCommitted',\ncommitMessage='$commitMessage')"
     }
 }
