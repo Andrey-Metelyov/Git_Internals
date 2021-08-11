@@ -21,6 +21,28 @@ public class GitInternalsTest extends StageTest<List<String>> {
                 new TestCase<List<String>>()
                         .setInput(
                                 "test\n" +
+                                "commit-tree\n" +
+                                "fd362f3f305819d17b4359444aa83e17e7d6924a")
+                        .setAttach(Arrays.asList(
+                                "Enter .git directory location:",
+                                "Enter command:",
+                                "Enter commit-hash",
+                                "main.kt",
+                                "readme.txt",
+                                "some-folder/qq.txt")),
+                new TestCase<List<String>>()
+                        .setInput(
+                                "test\n" +
+                                "commit-tree\n" +
+                                "12a4717e84b5e414f93cc91ca50a6d5a6c3563a0")
+                        .setAttach(Arrays.asList(
+                                "Enter .git directory location:",
+                                "Enter command:",
+                                "Enter commit-hash",
+                                "main.kt")),
+                new TestCase<List<String>>()
+                        .setInput(
+                                "test\n" +
                                 "cat-file\n" +
                                 "0eee6a98471a350b2c2316313114185ecaf82f0e\n")
                         .setAttach(Arrays.asList(

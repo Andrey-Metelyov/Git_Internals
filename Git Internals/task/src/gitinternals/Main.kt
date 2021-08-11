@@ -7,6 +7,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.zip.Inflater
+import kotlin.io.path.invariantSeparatorsPathString
 
 fun main() {
     println("Enter .git directory location:")
@@ -16,7 +17,33 @@ fun main() {
         "list-branches" -> showGitBranches(gitDir)
         "cat-file" -> showGitFile(gitDir)
         "log" -> showGitLog(gitDir)
+        "commit-tree" -> showCommitTree(gitDir)
         else -> println("Unknown command")
+    }
+}
+
+fun showCommitTree(gitDir: String) {
+    println("Enter commit-hash")
+    val hash = readLine()!!
+    val gitCommit = GitCommit.parseFile(gitDir, hash)
+    System.err.println(gitCommit.tree)
+    getCommitTree(gitDir, "", gitCommit.tree)
+}
+
+fun getCommitTree(gitDir: String, root: String, hash: String) {
+    val gitTree = GitTree.parseFile(gitDir, hash)
+    System.err.println(gitTree)
+    for (record in gitTree.listGitTreeRecord) {
+        val hash = record.hash
+        val path = Path.of(gitDir, "objects", hash.substring(0, 2), hash.substring(2))
+
+        val f = GitFile(path.toFile())
+        System.err.println("file type of ${hash}: ${f.type}")
+        if (f.type == "tree") {
+            getCommitTree(gitDir, record.filename, hash)
+        } else {
+            println(Path.of(root, record.filename).invariantSeparatorsPathString)
+        }
     }
 }
 
@@ -39,12 +66,6 @@ fun showGitLog(gitDir: String) {
         System.err.println("parent: ${commit}")
     }
 }
-
-/*
-Output text at line (4) (
-Neo <neo@matrix> commit timestamp: 2020-04-04 11:42:08 +03:00) does not match expected (
-Neo neo@matrix commit timestamp: 2020-04-04 11:42:08 +03:00)
-*/
 
 fun showGitBranches(gitDir: String) {
     val (_, currentHeadFileName) = File(gitDir, "HEAD").readLines()[0].split(": ")

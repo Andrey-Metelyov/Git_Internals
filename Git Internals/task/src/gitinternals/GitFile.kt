@@ -27,14 +27,15 @@ class GitFile(file: File) {
 
         val bytes = outputStream.toByteArray()
         val zeroByteIndex = bytes.indexOf(0)
-        System.err.println("zeroByteIndex=$zeroByteIndex")
+//        System.err.println("zeroByteIndex=$zeroByteIndex")
         val header = bytes.slice(0 until zeroByteIndex).map { it.toInt().toChar() }
         this.content = bytes.sliceArray(zeroByteIndex + 1..bytes.lastIndex)
         val headerString = header.joinToString("")
-        System.err.println(headerString)
+//        System.err.println(headerString)
         val (type, size) = headerString.split(" ")
         this.type = type
         this.contentSize = size.toInt()
         System.err.println("type:$type length:$size")
+//        System.err.println(this.content.map {it.toInt().toChar()}.joinToString(""))
     }
 }

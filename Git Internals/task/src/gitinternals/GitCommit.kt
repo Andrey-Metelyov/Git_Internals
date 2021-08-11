@@ -49,9 +49,6 @@ class GitCommit private constructor(
             current++
             val commitMessage = lines.subList(current++, lines.lastIndex).joinToString("\n")
 
-//            println("tree: $tree")
-//            println("parents: $parents")
-//            System.err.println(timeCommitCreated)
             val commitCreated = Instant.ofEpochSecond(timeCommitCreated.toLong())
             val commitApplied = Instant.ofEpochSecond(timeCommitApplied.toLong())
             val formatterCreated =
@@ -60,11 +57,7 @@ class GitCommit private constructor(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss ZZZZZ").withZone(ZoneId.of(timezoneCommitApplied))
             val timeCreated = formatterCreated.format(commitCreated)
             val timeCommitted = formatterApplied.format(commitApplied)
-//            System.err.println(timeCreated)
-//            System.err.println(timeCommitted)
-//            println("author: $authorName ${authorEmail.substring(1 until authorEmail.lastIndex)} original timestamp: $timeCreated")
-//            println("committer: $committerName ${committerEmail.substring(1 until committerEmail.lastIndex)} commit timestamp: $timeCommitted")
-//            println("commit message:$commitMessage")
+
             return GitCommit(tree, listParents,
                 authorName, authorEmail.substring(1 until authorEmail.lastIndex), timeCreated,
                 committerName, committerEmail.substring(1 until committerEmail.lastIndex), timeCommitted,
